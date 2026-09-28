@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: remote-start-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/remotestart
+    username: remotestart
+    password: remotestart
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: remote-start-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+app:
+  topics:
+    command-results: cpo.command-results
+  cpo:
+    # In production this points at the OCPI adapter's command endpoint.
+    base-url: http://localhost:8089
+    connect-timeout: 2s
+    read-timeout: 30s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

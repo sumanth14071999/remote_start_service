@@ -1,0 +1,4 @@
+# `mvn spring-boot:run -Dspring-boot.run.profiles=local` uses StubCpoClient instead of calling a real CPO.
+logging:
+  level:
+    com.example.remotestart: DEBUG
